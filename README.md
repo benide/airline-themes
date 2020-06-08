@@ -1,12 +1,13 @@
 # airline-themes
 
 [![MELPA](http://melpa-stable.milkbox.net/packages/airline-themes-badge.svg)](http://melpa-stable.milkbox.net/#/airline-themes)
-
 [![MELPA](http://melpa.org/packages/airline-themes-badge.svg)](http://melpa.org/#/airline-themes)
 
-This is a port of the themes in [vim-airline](https://github.com/vim-airline/vim-airline) to emacs [powerline](https://github.com/milkypostman/powerline).
+This is a port of the themes in
+[vim-airline](https://github.com/vim-airline/vim-airline-themes)
+to emacs [powerline](https://github.com/milkypostman/powerline).
 
-[![airline-demo.gif](https://raw.githubusercontent.com/AnthonyDiGirolamo/airline-themes/master/screenshots/airline-demo.gif)](https://raw.githubusercontent.com/AnthonyDiGirolamo/airline-themes/master/screenshots/airline-demo.gif)
+![/screenshots/themes/theme-084.png](/screenshots/themes/theme-084.png)
 
 ## Features
 
@@ -14,19 +15,6 @@ This is a port of the themes in [vim-airline](https://github.com/vim-airline/vim
 - Can set [Helm](https://github.com/emacs-helm/helm) colors
 - Can set the current cursor color based on the current airline theme
 - Works nicely in the gui or terminal
-
-## Eshell Colors
-
-Here is a shot of eshell in use with the prompt set to match the current airline theme (`airline-base16-shell-dark`):
-
-[![airline-eshell-screen1.png](https://raw.githubusercontent.com/AnthonyDiGirolamo/airline-themes/master/screenshots/airline-eshell-screen1.png)](https://raw.githubusercontent.com/AnthonyDiGirolamo/airline-themes/master/screenshots/eshell-screen1.png)
-
-## Helm Colors
-
-Here is a shot of `helm-mini` with the `airline-base16-shell-dark` and
-`airline-papercolor` themes.
-
-[![airline-helm-demo.gif](https://raw.githubusercontent.com/AnthonyDiGirolamo/airline-themes/master/screenshots/airline-helm-demo.gif)](https://raw.githubusercontent.com/AnthonyDiGirolamo/airline-themes/master/screenshots/airline-helm-demo.gif)
 
 ## Installation
 
@@ -38,8 +26,10 @@ Here is a shot of `helm-mini` with the `airline-base16-shell-dark` and
 Install via melpa or clone this repo into your load-path and add the following
 to your `init.el`
 
-    (require 'airline-themes)
-    (load-theme 'airline-light)
+``` emacs-lisp
+(require 'airline-themes)
+(load-theme 'airline-light t)
+```
 
 If you don't load a theme in your `init.el` then the default `mode-line-format`
 doesn't get set at startup and applying a theme may not look right. If things
@@ -49,54 +39,71 @@ the current buffer.
 
 ## Custom Options
 
-- `airline-helm-colors` Set helm colors to match the airline theme.<br/>
-  Valid Values: Enabled, Disabled<br/>
-  Default: Enabled
+Run `M-x customize-group airline-themes` to see and set all options with
+suggestions. Here are all the options for copy-pasting:
 
-- `airline-cursor-colors` Set the cursor color based on the current evil state.<br/>
-  Valid Values: Enabled, Disabled<br/>
-  Default: Enabled
+``` emacs-lisp
+;; Hide Evil and buffer state on inactive buffers.
+;; Valid Values: t (hidden), nil (shown)
+(setq airline-hide-state-on-inactive-buffers t)
 
-- `airline-display-directory` Display the currend directory along with the filename.<br/>
-  Valid Values: Full, Shortened, Disabled<br/>
-  Default: Shortened
+;; "Hide eyebrowse indicator on inactive buffers.
+;; Valid Values: t (hidden), nil (shown)"
+(setq airline-hide-eyebrowse-on-inactive-buffers t)
 
-- `airline-shortened-directory-length` Set the desired directory length.<br/>
-  Default: 30
+;; Hide vc branch on inactive buffers:
+;; Valid Values: t (hidden), nil (shown)
+(setq airline-hide-vc-branch-on-inactive-buffers nil)
 
-- `airline-eshell-colors` Set eshell prompt colors to match the airline theme.<br/>
-  Valid Values: Enabled, Disabled<br/>
-  Default: Enabled
+;; Set eshell prompt colors to match the airline theme.
+;; Valid Values: t (enabled), nil (disabled)
+(setq airline-eshell-colors t)
 
-- **Glyph Variables**
+;; Set helm colors to match the airline theme.
+;; Valid Values: t (enabled), nil (disabled)
+(setq airline-helm-colors t)
 
-  These variables control which UTF glyphs are used on the modeline. They
-  require a powerline patched font. Head over to https://github.com/powerline/fonts if
-  you need one.
+;; Set the cursor color based on the current evil state.
+;; Valid Values: t (enabled), nil (disabled)
+(setq airline-cursor-colors t)
 
-  Depending on your font, you may need to set the correct glyph character. Here
-  are the ones used by airline themes. The default characters are in the
-  vim-powerline column.
+;; Display the currend directory along with the filename.
+;; Valid Values: 'airline-directory-full
+;;               'airline-directory-shortened
+;;               nil (disabled)
+(setq airline-display-directory nil)
 
-      | Variable Name                        | powerline   | vim-powerline (default) |
-      |--------------------------------------+-------------+-------------------------|
-      | airline-utf-glyph-separator-left     | ''  #xe0b0 | '⮀'  #x2b80             |
-      | airline-utf-glyph-separator-right    | ''  #xe0b2 | '⮂'  #x2b82             |
-      | airline-utf-glyph-subseparator-left  | ''  #xe0b1 | '⮁'  #x2b81             |
-      | airline-utf-glyph-subseparator-right | ''  #xe0b3 | '⮃'  #x2b83             |
-      | airline-utf-glyph-branch             | ''  #xe0a0 | '⭠'  #x2b60             |
-      | airline-utf-glyph-readonly           | ''  #xe0a2 | '⭤'  #x2b64             |
-      | airline-utf-glyph-linenumber         | ''  #xe0a1 | '⭡'  #x2b61             |
+;; Max directory length to display when using 'airline-directory-shortened
+(setq airline-shortened-directory-length 30)
 
-  If your font characters don't look right try setting them to the powerline utf
-  glyphs by adding this to your init.el:
+;; Unicode character choices
+(setq airline-utf-glyph-separator-left #xe0b0
+      airline-utf-glyph-separator-right #xe0b2
+      airline-utf-glyph-subseparator-left #xe0b1
+      airline-utf-glyph-subseparator-right #xe0b3
+      airline-utf-glyph-branch #xe0a0
+      airline-utf-glyph-readonly #xe0a2
+      airline-utf-glyph-linenumber #x2630)
 
-      (setq powerline-utf-8-separator-left        #xe0b0
-            powerline-utf-8-separator-right       #xe0b2
-            airline-utf-glyph-separator-left      #xe0b0
-            airline-utf-glyph-separator-right     #xe0b2
-            airline-utf-glyph-subseparator-left   #xe0b1
-            airline-utf-glyph-subseparator-right  #xe0b3
-            airline-utf-glyph-branch              #xe0a0
-            airline-utf-glyph-readonly            #xe0a2
-            airline-utf-glyph-linenumber          #xe0a1)
+;; You may also wish to force powerline to use utf8 character separators
+(setq powerline-default-separator 'utf-8)
+(setq powerline-utf-8-separator-left  #xe0b0
+      powerline-utf-8-separator-right #xe0b2)
+```
+
+### Glyph Variables
+
+The `airline-utf-glyph-*` variables control which UTF glyphs are used on the
+modeline. They require a powerline patched font. Head over to
+https://github.com/powerline/fonts if you need one.
+
+Depending on your font, you may need to set the correct glyph character. If
+your font characters don't look right try running
+`M-x customize-group airline-themes` and choose some characters that look right
+with your font. Some default options have been added so you can pick what looks
+good.
+
+## Screenshots
+
+Head over to [All Theme Screenshots](/screenshots/all-themes.md) for preview
+images.
